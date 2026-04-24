@@ -30,8 +30,22 @@ public class BranchControl extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        doGet(request, response);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Lệnh này cực kỳ quan trọng để lưu Tiếng Việt có dấu không bị lỗi font
+        request.setCharacterEncoding("UTF-8"); 
+        
+        // Lấy dữ liệu người dùng nhập từ các ô input trong Modal (dựa vào thuộc tính name="")
+        String maCN = request.getParameter("maCN");
+        String tenCN = request.getParameter("tenCN");
+        String diaChi = request.getParameter("diaChi");
+        String sdt = request.getParameter("soDienThoai");
+        String quanLy = request.getParameter("quanLy");
+
+        // Gọi DAO để lưu vào Database
+        BranchDAO dao = new BranchDAO();
+        dao.addBranch(maCN, tenCN, diaChi, sdt, quanLy);
+        
+        // Lưu xong thì tải lại trang danh sách chi nhánh
+        response.sendRedirect("branch");
     }
 }

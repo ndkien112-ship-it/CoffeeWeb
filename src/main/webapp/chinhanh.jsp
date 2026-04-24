@@ -70,7 +70,7 @@
 
     <div class="modal fade" id="addBranchModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <form action="branchManager?action=add" method="post" class="modal-content border-0 shadow">
+        <form action="branch" method="post" class="modal-content border-0 shadow">
                 <div class="modal-header bg-success text-white">
                     <h5 class="modal-title fw-bold">➕ THÊM CƠ SỞ MỚI</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -90,7 +90,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">Số điện thoại</label>
-                        <input type="text" name="sdt" class="form-control" required>
+                        <input type="text" name="soDienThoai" class="form-control" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">Người quản lý</label>

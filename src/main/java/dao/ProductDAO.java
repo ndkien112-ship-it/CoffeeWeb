@@ -2,49 +2,49 @@ package dao;
 
 import dal.DBContext;
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import model.Drink;
 
 public class ProductDAO {
+
+    // Lấy danh sách toàn bộ thực đơn
     public List<Drink> getAllProducts() {
         List<Drink> list = new ArrayList<>();
         String query = "SELECT * FROM SanPham";
         try (Connection conn = new DBContext().getConnection();
              PreparedStatement ps = conn.prepareStatement(query);
              ResultSet rs = ps.executeQuery()) {
+             
             while (rs.next()) {
-                list.add(new Drink(rs.getString("MaSP"), rs.getString("TenSP"), 
-                        rs.getDouble("GiaNiemYet"), rs.getString("MoTa"), 
-                        rs.getString("HinhAnh"), rs.getInt("MaLoai")));
+                list.add(new Drink(
+                    rs.getString("MaSP"),
+                    rs.getString("TenSP"),
+                    rs.getInt("MaLoai"),      // SQL gọi là MaLoai, Java lấy kiểu int
+                    rs.getDouble("GiaNiemYet") // SQL gọi là GiaNiemYet
+                ));
             }
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return list;
     }
 
-    public void addProduct(String id, String name, double price, String desc, int type) {
-        String query = "INSERT INTO SanPham (MaSP, TenSP, GiaNiemYet, MoTa, MaLoai) VALUES (?, ?, ?, ?, ?)";
+    // Thêm món mới vào thực đơn
+    public void addProduct(String maSP, String tenSP, int maLoai, double giaNiemYet) {
+        String query = "INSERT INTO SanPham (MaSP, TenSP, MaLoai, GiaNiemYet) VALUES (?, ?, ?, ?)";
         try (Connection conn = new DBContext().getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setString(1, id); ps.setString(2, name);
-            ps.setDouble(3, price); ps.setString(4, desc); ps.setInt(5, type);
+             
+            ps.setString(1, maSP);
+            ps.setString(2, tenSP);
+            ps.setInt(3, maLoai);
+            ps.setDouble(4, giaNiemYet);
+            
             ps.executeUpdate();
-        } catch (Exception e) { e.printStackTrace(); }
-    }
-
-    public void deleteProduct(String pid) {
-        try (Connection conn = new DBContext().getConnection()) {
-            // Xóa bảng con trước để tránh lỗi ràng buộc [cite: 178]
-            PreparedStatement ps1 = conn.prepareStatement("DELETE FROM ChiTiet WHERE MaSP = ?");
-            ps1.setString(1, pid); ps1.executeUpdate();
-            PreparedStatement ps2 = conn.prepareStatement("DELETE FROM PhaChe WHERE MaSP = ?");
-            ps2.setString(1, pid); ps2.executeUpdate();
-            // Xóa bảng cha
-            PreparedStatement ps3 = conn.prepareStatement("DELETE FROM SanPham WHERE MaSP = ?");
-            ps3.setString(1, pid); ps3.executeUpdate();
-        } catch (Exception e) { e.printStackTrace(); }
-    }
-
-    public Object getProductByID(String maSP) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

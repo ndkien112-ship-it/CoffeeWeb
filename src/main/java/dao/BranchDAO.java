@@ -21,14 +21,25 @@ public class BranchDAO {
         return list;
     }
 
-    public void addBranch(String id, String name, String addr, String phone, String manager) {
+    // Hàm thêm chi nhánh mới
+    public void addBranch(String id, String tenCN, String diaChi, String soDienThoai, String quanLy) {
         String query = "INSERT INTO ChiNhanh (MaCN, TenCN, DiaChi, SoDienThoai, QuanLy) VALUES (?, ?, ?, ?, ?)";
+        
         try (Connection conn = new DBContext().getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setString(1, id); ps.setString(2, name);
-            ps.setString(3, addr); ps.setString(4, phone); ps.setString(5, manager);
-            ps.executeUpdate();
-        } catch (Exception e) { e.printStackTrace(); }
+            
+            // Truyền 5 tham số vào dấu ?
+            ps.setString(1, id);
+            ps.setString(2, tenCN);
+            ps.setString(3, diaChi);
+            ps.setString(4, soDienThoai);
+            ps.setString(5, quanLy);
+            
+            ps.executeUpdate(); // Thực thi lệnh lưu vào SQL
+            
+        } catch (Exception e) { 
+            e.printStackTrace(); 
+        }
     }
 
     // Hàm lấy 1 chi nhánh theo ID (Dùng cho chức năng Sửa)

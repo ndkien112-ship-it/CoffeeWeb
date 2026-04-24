@@ -139,52 +139,8 @@
             </div>
         </div>
 
-        <div class="row g-4 mb-5">
-            <div class="col-md-3">
-                <div class="card card-stat p-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <p class="text-muted mb-1 small fw-bold">TỔNG CHI NHÁNH</p>
-                            <h3 class="fw-bold mb-0">03</h3>
-                        </div>
-                        <div class="icon-box bg-primary bg-opacity-10 text-primary"><i class="fas fa-map-marker-alt"></i></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card card-stat p-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <p class="text-muted mb-1 small fw-bold">TỔNG NHÂN VIÊN</p>
-                            <h3 class="fw-bold mb-0">12</h3>
-                        </div>
-                        <div class="icon-box bg-success bg-opacity-10 text-success"><i class="fas fa-user-tie"></i></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card card-stat p-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <p class="text-muted mb-1 small fw-bold">MÓN ĐANG BÁN</p>
-                            <h3 class="fw-bold mb-0">24</h3>
-                        </div>
-                        <div class="icon-box bg-warning bg-opacity-10 text-warning"><i class="fas fa-coffee"></i></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card card-stat p-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <p class="text-muted mb-1 small fw-bold">HÓA ĐƠN MỚI</p>
-                            <h3 class="fw-bold mb-0">86</h3>
-                        </div>
-                        <div class="icon-box bg-info bg-opacity-10 text-info"><i class="fas fa-shopping-cart"></i></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
+    
 
         <div class="row g-4">
             <div class="col-md-8">
