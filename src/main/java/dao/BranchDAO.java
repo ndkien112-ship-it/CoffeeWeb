@@ -2,91 +2,81 @@ package dao;
 
 import dal.DBContext;
 import java.sql.*;
-import java.util.*;
-import model.ChiNhanh;
+import java.util.ArrayList;
+import java.util.List;
+import model.Branch;
 
 public class BranchDAO {
-    public List<ChiNhanh> getAllBranches() {
-        List<ChiNhanh> list = new ArrayList<>();
+
+    public List<Branch> getAllBranches() {
+        List<Branch> list = new ArrayList<>();
         String query = "SELECT * FROM ChiNhanh";
         try (Connection conn = new DBContext().getConnection();
              PreparedStatement ps = conn.prepareStatement(query);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                list.add(new ChiNhanh(rs.getString("MaCN"), rs.getString("TenCN"), 
-                        rs.getString("DiaChi"), rs.getString("SoDienThoai"), 
-                        rs.getString("QuanLy")));
+                list.add(new Branch(
+                    rs.getString("MaCN"), rs.getString("TenCN"), 
+                    rs.getString("Tinh"), rs.getString("DiaChiCuThe"), 
+                    rs.getString("SDT"), rs.getString("Email")
+                ));
             }
         } catch (Exception e) { e.printStackTrace(); }
         return list;
     }
 
-    // Hàm thêm chi nhánh mới
-    public void addBranch(String id, String tenCN, String diaChi, String soDienThoai, String quanLy) {
-        String query = "INSERT INTO ChiNhanh (MaCN, TenCN, DiaChi, SoDienThoai, QuanLy) VALUES (?, ?, ?, ?, ?)";
-        
+    public void addBranch(String maCN, String tenCN, String tinh, String diaChiCuThe, String sdt, String email) {
+        String query = "INSERT INTO ChiNhanh (MaCN, TenCN, Tinh, DiaChiCuThe, SDT, Email) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = new DBContext().getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
-            
-            // Truyền 5 tham số vào dấu ?
-            ps.setString(1, id);
+            ps.setString(1, maCN);
             ps.setString(2, tenCN);
-            ps.setString(3, diaChi);
-            ps.setString(4, soDienThoai);
-            ps.setString(5, quanLy);
-            
-            ps.executeUpdate(); // Thực thi lệnh lưu vào SQL
-            
-        } catch (Exception e) { 
-            e.printStackTrace(); 
-        }
+            ps.setString(3, tinh);
+            ps.setString(4, diaChiCuThe);
+            ps.setString(5, sdt);
+            ps.setString(6, email);
+            ps.executeUpdate();
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
-    // Hàm lấy 1 chi nhánh theo ID (Dùng cho chức năng Sửa)
-    public ChiNhanh getBranchByID(String id) {
-        String query = "SELECT * FROM ChiNhanh WHERE MaCN = ?"; 
+    public void deleteBranch(String id) {
+        String query = "DELETE FROM ChiNhanh WHERE MaCN = ?";
         try (Connection conn = new DBContext().getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
-            
-            ps.setString(1, id); // Truyền mã chi nhánh vào dấu ?
-            
+            ps.setString(1, id);
+            ps.executeUpdate();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public Branch getBranchByID(String id) {
+        String query = "SELECT * FROM ChiNhanh WHERE MaCN = ?";
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return new ChiNhanh(
-                        rs.getString("MaCN"), 
-                        rs.getString("TenCN"), 
-                        rs.getString("DiaChi"), 
-                        rs.getString("SoDienThoai"), 
-                        rs.getString("QuanLy")
+                    return new Branch(
+                        rs.getString("MaCN"), rs.getString("TenCN"), 
+                        rs.getString("Tinh"), rs.getString("DiaChiCuThe"), 
+                        rs.getString("SDT"), rs.getString("Email")
                     );
                 }
             }
-        } catch (Exception e) { 
-            e.printStackTrace(); 
-        }
-        return null; // Trả về null nếu không tìm thấy
+        } catch (Exception e) { e.printStackTrace(); }
+        return null;
     }
 
-    // Hàm cập nhật thông tin Chi nhánh
-    public void updateBranch(String id, String tenCN, String diaChi, String soDienThoai, String quanLy) {
-        // Lệnh SQL để UPDATE dữ liệu dựa trên Khóa chính MaCN
-        String query = "UPDATE ChiNhanh SET TenCN = ?, DiaChi = ?, SoDienThoai = ?, QuanLy = ? WHERE MaCN = ?";
-        
+    public void editBranch(String maCN, String tenCN, String tinh, String diaChiCuThe, String sdt, String email) {
+        String query = "UPDATE ChiNhanh SET TenCN=?, Tinh=?, DiaChiCuThe=?, SDT=?, Email=? WHERE MaCN=?";
         try (Connection conn = new DBContext().getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
-            
-            // Truyền 5 tham số vào 5 dấu hỏi chấm (?)
             ps.setString(1, tenCN);
-            ps.setString(2, diaChi);
-            ps.setString(3, soDienThoai);
-            ps.setString(4, quanLy);
-            ps.setString(5, id); // id chính là MaCN nằm ở cuối cùng
-            
-            // Thực thi lệnh cập nhật
+            ps.setString(2, tinh);
+            ps.setString(3, diaChiCuThe);
+            ps.setString(4, sdt);
+            ps.setString(5, email);
+            ps.setString(6, maCN);
             ps.executeUpdate();
-            
-        } catch (Exception e) { 
-            e.printStackTrace(); 
-        }
+        } catch (Exception e) { e.printStackTrace(); }
     }
 }
